@@ -1,14 +1,12 @@
 package com.example.mutsasns.controller;
 
 
-import com.example.mutsasns.entity.dto.UserJoinRequest;
-import com.example.mutsasns.entity.dto.UserJoinResponse;
+import com.example.mutsasns.entity.dto.Response;
+import com.example.mutsasns.entity.dto.user.UserJoinRequest;
+import com.example.mutsasns.entity.dto.user.UserJoinResponse;
 import com.example.mutsasns.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -19,8 +17,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public UserJoinResponse add(UserJoinRequest dto) {
-        return userService.add(dto);
+    public Response<UserJoinResponse> add(@RequestBody UserJoinRequest dto) {
+        return Response.success(userService.add(dto));
     }
 
 
