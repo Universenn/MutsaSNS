@@ -1,8 +1,8 @@
 package com.example.mutsasns.service;
 
 import com.example.mutsasns.entity.User;
-import com.example.mutsasns.entity.dto.UserJoinRequest;
-import com.example.mutsasns.entity.dto.UserJoinResponse;
+import com.example.mutsasns.entity.dto.user.UserJoinRequest;
+import com.example.mutsasns.entity.dto.user.UserJoinResponse;
 import com.example.mutsasns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

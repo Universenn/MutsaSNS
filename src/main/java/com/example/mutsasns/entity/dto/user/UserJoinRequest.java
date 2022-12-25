@@ -1,4 +1,4 @@
-package com.example.mutsasns.entity.dto;
+package com.example.mutsasns.entity.dto.user;
 
 import com.example.mutsasns.entity.User;
 import lombok.AllArgsConstructor;
