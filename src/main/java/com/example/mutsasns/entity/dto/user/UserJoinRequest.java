@@ -12,6 +12,9 @@ public class UserJoinRequest {
 
     private String userName;
     private String password;
+
+
+    // DTO -> Entity
     public User toEntity() {
         return User.builder()
                 .userName(userName)
