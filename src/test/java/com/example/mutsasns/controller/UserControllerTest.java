@@ -3,6 +3,8 @@ package com.example.mutsasns.controller;
 import com.example.mutsasns.entity.dto.user.UserJoinRequest;
 import com.example.mutsasns.entity.dto.user.UserJoinResponse;
 import com.example.mutsasns.entity.dto.user.UserLoginResponse;
+import com.example.mutsasns.exception.AppException;
+import com.example.mutsasns.exception.ErrorCode;
 import com.example.mutsasns.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,6 +65,25 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("회원가입 실패 - DUPLICATED_USERNAME")
+    @WithMockUser
+    void join_fail() throws Exception {
+
+        // when
+        when(userService.add(any()))
+                .thenThrow(new AppException(ErrorCode.DUPLICATED_USERNAME, ErrorCode.DUPLICATED_USERNAME.getMessage()));
+
+        // then
+        mockMvc.perform(post("/api/v1/users/join")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                .andDo(print())
+                .andExpect(status().is(ErrorCode.DUPLICATED_USERNAME.getHttpStatus().value()));
+
+    }
+
+    @Test
     @DisplayName("로그인 성공")
     @WithMockUser
     void login_success() throws Exception {
@@ -78,5 +99,44 @@ class UserControllerTest {
                         .content(objectMapper.writeValueAsBytes(userJoinRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("로그인 실패_USERNAME_NOTFOUND")
+    @WithMockUser
+    void login_fail_1() throws Exception {
+
+//        userJoinRequest = new UserJoinRequest(userJoinRequest.getUserName(), "틀림");
+
+        // when
+        when(userService.login(any()))
+                .thenThrow(new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+
+        // then
+        mockMvc.perform(post("/api/v1/users/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                .andDo(print())
+                .andExpect(status().is(ErrorCode.USERNAME_NOT_FOUND.getHttpStatus().value()));
+    }
+
+
+    @Test
+    @DisplayName("로그인 실패_INVALID_PASSWORD")
+    @WithMockUser
+    void login_fail_2() throws Exception {
+
+        // when
+        when(userService.login(any()))
+                .thenThrow(new AppException(ErrorCode.INVALID_PASSWORD, ErrorCode.INVALID_PASSWORD.getMessage()));
+
+        // then
+        mockMvc.perform(post("/api/v1/users/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                .andDo(print())
+                .andExpect(status().is(ErrorCode.INVALID_PASSWORD.getHttpStatus().value()));
     }
 }
