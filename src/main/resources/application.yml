@@ -16,3 +16,8 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: create
+
+jwt:
+  token:
+    secret: "secretKey"
+
