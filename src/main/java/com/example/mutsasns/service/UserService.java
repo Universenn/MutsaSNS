@@ -9,12 +9,14 @@ import com.example.mutsasns.exception.ErrorCode;
 import com.example.mutsasns.repository.UserRepository;
 import com.example.mutsasns.security.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -50,8 +52,11 @@ public class UserService {
         User user = userRepository.findByUserName(dto.getUserName())
                 .orElseThrow(()-> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
+
+        // password 틀림
+        log.info("selectedPw : {}, pw : {}", user.getPassword(), dto.getPassword());
         if (!encoder.matches(dto.getPassword(), user.getPassword()))
-            throw new AppException(ErrorCode.INVALID_PASSWORD, ErrorCode.INVALID_TOKEN.getMessage());
+            throw new AppException(ErrorCode.INVALID_PASSWORD, ErrorCode.INVALID_PASSWORD.getMessage());
 
         String token = JwtTokenUtil.createToken(dto.getUserName(), secretKey, expireTimesMs);
 
