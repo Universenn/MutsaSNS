@@ -22,4 +22,12 @@ public class PostController {
         return Response.success(PostCreateResponse.success("포스트 등록 완료", postResponse.getId()));
     }
 
+    @PutMapping("/{id}")
+    public Response<PostCreateResponse> update(Authentication authentication, @RequestBody PostRequest dto, @PathVariable Long id) {
+        String userName = authentication.getName();
+        PostResponse postResponse = postService.update(dto, userName, id);
+        return Response.success(PostCreateResponse.success("포스트 수정 완료", postResponse.getId()));
+    }
+
+
 }
