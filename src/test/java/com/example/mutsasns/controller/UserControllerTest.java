@@ -1,12 +1,11 @@
 package com.example.mutsasns.controller;
 
-import com.example.mutsasns.entity.dto.user.UserJoinRequest;
+import com.example.mutsasns.entity.dto.user.UserRequest;
 import com.example.mutsasns.entity.dto.user.UserJoinResponse;
 import com.example.mutsasns.entity.dto.user.UserLoginResponse;
 import com.example.mutsasns.exception.AppException;
 import com.example.mutsasns.exception.ErrorCode;
 import com.example.mutsasns.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,8 +40,8 @@ class UserControllerTest {
     String password = "q1w2e3r4";
 
     String token = "token";
-    UserJoinRequest userJoinRequest = new UserJoinRequest(userName, password);
-    UserJoinResponse userJoinResponse = UserJoinResponse.of(userJoinRequest.toEntity());
+    UserRequest userRequest = new UserRequest(userName, password);
+    UserJoinResponse userJoinResponse = UserJoinResponse.of(userRequest.toEntity());
 
 
     @Test
@@ -51,14 +50,14 @@ class UserControllerTest {
     void join() throws Exception {
 
         // when
-        when(userService.add(userJoinRequest))
+        when(userService.join(userRequest))
                 .thenReturn(userJoinResponse);
 
         // then
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                        .content(objectMapper.writeValueAsBytes(userRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -70,14 +69,14 @@ class UserControllerTest {
     void join_fail() throws Exception {
 
         // when
-        when(userService.add(any()))
+        when(userService.join(any()))
                 .thenThrow(new AppException(ErrorCode.DUPLICATED_USERNAME, ErrorCode.DUPLICATED_USERNAME.getMessage()));
 
         // then
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                        .content(objectMapper.writeValueAsBytes(userRequest)))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.DUPLICATED_USERNAME.getHttpStatus().value()));
 
@@ -89,14 +88,14 @@ class UserControllerTest {
     void login_success() throws Exception {
 
         // when
-        when(userService.login(userJoinRequest))
+        when(userService.login(userRequest))
                 .thenReturn(new UserLoginResponse(token));
 
         // then
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                        .content(objectMapper.writeValueAsBytes(userRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -116,7 +115,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                        .content(objectMapper.writeValueAsBytes(userRequest)))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.USERNAME_NOT_FOUND.getHttpStatus().value()));
     }
@@ -135,7 +134,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+                        .content(objectMapper.writeValueAsBytes(userRequest)))
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_PASSWORD.getHttpStatus().value()));
     }

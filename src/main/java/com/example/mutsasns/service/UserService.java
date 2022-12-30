@@ -1,7 +1,7 @@
 package com.example.mutsasns.service;
 
 import com.example.mutsasns.entity.User;
-import com.example.mutsasns.entity.dto.user.UserJoinRequest;
+import com.example.mutsasns.entity.dto.user.UserRequest;
 import com.example.mutsasns.entity.dto.user.UserJoinResponse;
 import com.example.mutsasns.entity.dto.user.UserLoginResponse;
 import com.example.mutsasns.exception.AppException;
@@ -28,17 +28,17 @@ public class UserService {
 
     private Long expireTimesMs = 1000 * 60 * 60L; // 1000*60*60 = 1시간
 
-    public UserJoinResponse add(UserJoinRequest userJoinRequest) {
+    public UserJoinResponse join(UserRequest dto) {
 
         // userName 중복
-        userRepository.findByUserName(userJoinRequest.getUserName()).ifPresent(user -> {
+        userRepository.findByUserName(dto.getUserName()).ifPresent(user -> {
             throw new AppException(ErrorCode.DUPLICATED_USERNAME, ErrorCode.DUPLICATED_USERNAME.getMessage());
         });
 
 //
         User user = User.builder()
-                .userName(userJoinRequest.getUserName())
-                .password(encoder.encode(userJoinRequest.getPassword()))
+                .userName(dto.getUserName())
+                .password(encoder.encode(dto.getPassword()))
                 .build();
 
         userRepository.save(user);
@@ -46,7 +46,7 @@ public class UserService {
         return UserJoinResponse.of(user);
     }
 
-    public UserLoginResponse login(UserJoinRequest dto) {
+    public UserLoginResponse login(UserRequest dto) {
 
         // userName 찾을 수 없음
         User user = userRepository.findByUserName(dto.getUserName())
