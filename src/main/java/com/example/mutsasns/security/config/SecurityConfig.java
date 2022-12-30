@@ -32,8 +32,11 @@ public class SecurityConfig {
                 .authorizeRequests()
 //                .antMatchers("/api/**").permitAll() // api/** 허용
                 .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll() // join, login 허용
-                .antMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll() // Get posts 허용
-                .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated() // post 인증 필요
+                .antMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll() // Get 허용
+                .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated() // 인증 필요
+                .antMatchers(HttpMethod.PUT, "/api/v1/**").authenticated() // 인증 필요
+                .antMatchers(HttpMethod.PATCH, "/api/v1/**").authenticated() // 인증 필요
+                .antMatchers(HttpMethod.DELETE, "/api/v1/**").authenticated() // 인증 필요
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt 사용하는 경우 씀
