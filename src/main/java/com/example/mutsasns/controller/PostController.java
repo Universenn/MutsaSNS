@@ -36,7 +36,11 @@ public class PostController {
         return Response.success(PostCreateResponse.success("포스트 삭제 완료", postResponse.getId()));
     }
 
-
+    @GetMapping("/{id}")
+    public Response<PostResponse> detailPost(@PathVariable Long id) {
+        PostResponse postResponse = postService.detailPost(id);
+        return Response.success(postResponse);
+    }
 
 
 }

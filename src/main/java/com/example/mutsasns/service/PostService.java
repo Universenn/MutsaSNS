@@ -52,4 +52,8 @@ public class PostService {
         return PostResponse.of(post);
     }
 
+    public PostResponse detailPost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+        return PostResponse.of(post);
+    }
 }
