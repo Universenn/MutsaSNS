@@ -30,4 +30,9 @@ public class Post {
 
 //    private LocalDateTime createdAt;
 //    private LocalDateTime lastModifiedAt;
+
+    public void update(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
 }
