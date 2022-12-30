@@ -1,6 +1,7 @@
 package com.example.mutsasns.entity.dto.post;
 
 import com.example.mutsasns.entity.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,11 @@ public class PostResponse {
     private String title;
     private String body;
     private String userName;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime creatAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedAt;
 
     public static PostResponse of(Post post) {
@@ -24,8 +29,8 @@ public class PostResponse {
                 .title(post.getTitle())
                 .body(post.getBody())
                 .userName(post.getUser().getUserName())
-//                .creatAt(post.getCreatedAt())
-//                .lastModifiedAt(post.getLastModifiedAt())
+                .creatAt(post.getCreatedDate())
+                .lastModifiedAt(post.getLastModifiedBy())
                 .build();
     }
 }
