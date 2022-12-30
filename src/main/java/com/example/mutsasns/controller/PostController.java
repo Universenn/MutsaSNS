@@ -6,6 +6,8 @@ import com.example.mutsasns.entity.dto.post.PostRequest;
 import com.example.mutsasns.entity.dto.post.PostResponse;
 import com.example.mutsasns.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +42,12 @@ public class PostController {
     public Response<PostResponse> detailPost(@PathVariable Long id) {
         PostResponse postResponse = postService.detailPost(id);
         return Response.success(postResponse);
+    }
+
+    @GetMapping()
+    public Response<Page<PostResponse>> list(Pageable pageable) {
+        Page<PostResponse> list = postService.list(pageable);
+        return Response.success(list);
     }
 
 

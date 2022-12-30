@@ -56,4 +56,8 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
         return PostResponse.of(post);
     }
+
+    public Page<PostResponse> list(Pageable pageable) {
+        return postRepository.findAll(pageable).map(PostResponse::of);
+    }
 }
