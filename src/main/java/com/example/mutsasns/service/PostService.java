@@ -33,7 +33,7 @@ public class PostService {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
-        if (!user.getId().equals(post.getId())) throw new AppException(ErrorCode.INVALID_TOKEN, ErrorCode.INVALID_TOKEN.getMessage());
+        if (!post.getUser().getId().equals(user.getId())) throw new AppException(ErrorCode.INVALID_TOKEN, ErrorCode.INVALID_TOKEN.getMessage());
 
         post.update(dto.getTitle(), dto.getBody());
 
@@ -45,9 +45,9 @@ public class PostService {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
-        if (!user.getId().equals(post.getId())) throw new AppException(ErrorCode.INVALID_TOKEN, ErrorCode.INVALID_TOKEN.getMessage());
+        if (!post.getUser().getId().equals(user.getId())) throw new AppException(ErrorCode.INVALID_TOKEN, ErrorCode.INVALID_TOKEN.getMessage());
 
-        postRepository.deleteById(post.getId());
+        postRepository.deleteById(id);
 
         return PostResponse.of(post);
     }
