@@ -11,6 +11,8 @@ import com.example.mutsasns.repository.CommentRepository;
 import com.example.mutsasns.repository.PostRepository;
 import com.example.mutsasns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,5 +32,10 @@ public class CommentService {
 
         Comment comment = commentRepository.save(dto.toEntity(user, post));
         return CommentResponse.of(comment);
+    }
+
+    public Page<CommentResponse> findAll(Pageable pageable, Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+        return commentRepository.findByPost(post, pageable).map(CommentResponse::of);
     }
 }
