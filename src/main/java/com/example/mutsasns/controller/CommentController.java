@@ -6,6 +6,8 @@ import com.example.mutsasns.entity.dto.comment.CommentResponse;
 import com.example.mutsasns.entity.dto.comment.CommentUpdateResponse;
 import com.example.mutsasns.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +29,11 @@ public class CommentController {
         String userName = authentication.getName();
         CommentUpdateResponse commentupdateResponse = commentService.update(dto, userName, postId, id);
         return Response.success(commentupdateResponse);
+    }
+
+    @GetMapping("/{postId}/comments")
+    public Response<Page<CommentResponse>> findCommentsList(@PathVariable Long postId, Pageable pageable) {
+        Page<CommentResponse> CommentResponse = commentService.findCommentsList(postId, pageable);
+        return Response.success(CommentResponse);
     }
 }

@@ -12,6 +12,8 @@ import com.example.mutsasns.repository.CommentRepository;
 import com.example.mutsasns.repository.PostRepository;
 import com.example.mutsasns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +47,9 @@ public class CommentService {
         comment.update(dto.getComment());
 
         return CommentUpdateResponse.of(comment);
+    }
+
+    public Page<CommentResponse> findCommentsList(Long postId, Pageable pageable) {
+        return commentRepository.findAllByPostId(postId, pageable).map(CommentResponse::of);
     }
 }
