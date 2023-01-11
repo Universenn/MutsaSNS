@@ -3,6 +3,7 @@ package com.example.mutsasns.controller;
 import com.example.mutsasns.entity.dto.Response;
 import com.example.mutsasns.entity.dto.comment.CommentRequest;
 import com.example.mutsasns.entity.dto.comment.CommentResponse;
+import com.example.mutsasns.entity.dto.comment.CommentUpdateResponse;
 import com.example.mutsasns.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -19,5 +20,12 @@ public class CommentController {
         String userName = authentication.getName();
         CommentResponse commentResponse = commentService.create(dto, userName, postId);
         return Response.success(commentResponse);
+    }
+
+    @PutMapping("/{postId}/comments/{id}")
+    public Response<CommentUpdateResponse> update(@PathVariable Long id, @PathVariable Long postId, Authentication authentication, @RequestBody CommentRequest dto) {
+        String userName = authentication.getName();
+        CommentUpdateResponse commentupdateResponse = commentService.update(dto, userName, postId, id);
+        return Response.success(commentupdateResponse);
     }
 }

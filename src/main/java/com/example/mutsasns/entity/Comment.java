@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -35,4 +36,12 @@ public class Comment {
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime lastModifiedBy;
+
+    public void update(String comment) {
+        this.comment = comment;
+    }
 }
