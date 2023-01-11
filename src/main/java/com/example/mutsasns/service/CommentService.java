@@ -3,6 +3,7 @@ package com.example.mutsasns.service;
 import com.example.mutsasns.entity.Comment;
 import com.example.mutsasns.entity.Post;
 import com.example.mutsasns.entity.User;
+import com.example.mutsasns.entity.dto.comment.CommentDeleteResponse;
 import com.example.mutsasns.entity.dto.comment.CommentRequest;
 import com.example.mutsasns.entity.dto.comment.CommentResponse;
 import com.example.mutsasns.entity.dto.comment.CommentUpdateResponse;
@@ -51,5 +52,18 @@ public class CommentService {
 
     public Page<CommentResponse> findCommentsList(Long postId, Pageable pageable) {
         return commentRepository.findAllByPostId(postId, pageable).map(CommentResponse::of);
+    }
+
+    public CommentDeleteResponse delete(String userName, Long postId, Long id) {
+        User user = userRepository.findByUserName(userName).orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        if (!post.getUser().getId().equals(user.getId())) throw new AppException(ErrorCode.INVALID_TOKEN, ErrorCode.INVALID_TOKEN.getMessage());
+
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND, ErrorCode.COMMENT_NOT_FOUND.getMessage()));
+
+        commentRepository.deleteById(id);
+
+        return CommentDeleteResponse.of(comment);
     }
 }

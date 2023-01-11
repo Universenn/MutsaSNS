@@ -1,6 +1,7 @@
 package com.example.mutsasns.controller;
 
 import com.example.mutsasns.entity.dto.Response;
+import com.example.mutsasns.entity.dto.comment.CommentDeleteResponse;
 import com.example.mutsasns.entity.dto.comment.CommentRequest;
 import com.example.mutsasns.entity.dto.comment.CommentResponse;
 import com.example.mutsasns.entity.dto.comment.CommentUpdateResponse;
@@ -35,5 +36,12 @@ public class CommentController {
     public Response<Page<CommentResponse>> findCommentsList(@PathVariable Long postId, Pageable pageable) {
         Page<CommentResponse> CommentResponse = commentService.findCommentsList(postId, pageable);
         return Response.success(CommentResponse);
+    }
+
+    @DeleteMapping("/{postId}/comments/{id}")
+    public Response<CommentDeleteResponse> delete(@PathVariable Long id, @PathVariable Long postId, Authentication authentication) {
+        String userName = authentication.getName();
+        CommentDeleteResponse commentDeleteResponse = commentService.delete(userName, postId, id);
+        return Response.success(commentDeleteResponse);
     }
 }
