@@ -9,28 +9,25 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class CommentResponse {
 
     private Long id;
     private String comment;
     private String userName;
     private Long postId;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
-
     public static CommentResponse of(Comment comment) {
         return CommentResponse.builder()
                 .id(comment.getId())
                 .comment(comment.getComment())
                 .userName(comment.getUser().getUserName())
                 .postId(comment.getPost().getId())
-                .createdAt(comment.getCreatedDateTime())
+                .createdAt(comment.getCreateAt())
                 .build();
-
     }
 }

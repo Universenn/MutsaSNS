@@ -7,18 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class CommentRequest {
     private String comment;
 
     public Comment toEntity(User user, Post post) {
         return Comment.builder()
-                .comment(comment)
-                .user(user)
+                .comment(this.comment)
                 .post(post)
+                .user(user)
                 .build();
-
     }
 }
