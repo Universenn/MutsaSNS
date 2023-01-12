@@ -4,6 +4,7 @@ import com.example.mutsasns.entity.dto.Response;
 import com.example.mutsasns.entity.dto.post.PostCreateResponse;
 import com.example.mutsasns.entity.dto.post.PostRequest;
 import com.example.mutsasns.entity.dto.post.PostResponse;
+import com.example.mutsasns.service.LikesService;
 import com.example.mutsasns.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final LikesService likesService;
 
     @PostMapping()
     public Response<PostCreateResponse> create(Authentication authentication, @RequestBody PostRequest dto) {
@@ -49,6 +51,24 @@ public class PostController {
         Page<PostResponse> list = postService.list(pageable);
         return Response.success(list);
     }
+
+    /**
+     * 좋아요 기능
+     */
+
+    @PostMapping("/{postId}/likes")
+    public Response<String> doLikes(@PathVariable Long postId, Authentication authentication) {
+        String userName = authentication.getName();
+        String result = likesService.pushLike(postId, userName);
+        return Response.success(result);
+    }
+    @GetMapping("/{postId}/likes")
+    public Response<Integer> countLikes(@PathVariable Long postId) {
+        Integer result = likesService.countLike(postId);
+        return Response.success(result);
+    }
+
+
 
 
 }
