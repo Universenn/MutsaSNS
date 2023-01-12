@@ -35,7 +35,7 @@ public class Comment {
 
     @CreatedDate
     @Column(nullable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(nullable = false)

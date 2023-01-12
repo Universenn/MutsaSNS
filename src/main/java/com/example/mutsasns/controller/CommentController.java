@@ -9,6 +9,8 @@ import com.example.mutsasns.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +35,7 @@ public class CommentController {
     }
 
     @GetMapping("/{postId}/comments")
-    public Response<Page<CommentResponse>> findCommentsList(@PathVariable Long postId, Pageable pageable) {
+    public Response<Page<CommentResponse>> findCommentsList(@PathVariable Long postId,@PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CommentResponse> CommentResponse = commentService.findCommentsList(postId, pageable);
         return Response.success(CommentResponse);
     }

@@ -25,7 +25,7 @@ public class Likes {
 
     @CreatedDate
     @Column(nullable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(nullable = false)

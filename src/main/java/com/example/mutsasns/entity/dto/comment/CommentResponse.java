@@ -20,14 +20,14 @@ public class CommentResponse {
     private String userName;
     private Long postId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;
     public static CommentResponse of(Comment comment) {
         return CommentResponse.builder()
                 .id(comment.getId())
                 .comment(comment.getComment())
                 .userName(comment.getUser().getUserName())
                 .postId(comment.getPost().getId())
-                .createdAt(comment.getCreateAt())
+                .createdDate(comment.getCreatedDate())
                 .build();
     }
 }

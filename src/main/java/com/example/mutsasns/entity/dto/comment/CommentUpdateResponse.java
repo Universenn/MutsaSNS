@@ -20,7 +20,7 @@ public class CommentUpdateResponse {
     private String userName;
     private Long postId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedBy;
@@ -32,7 +32,7 @@ public class CommentUpdateResponse {
                 .comment(comment.getComment())
                 .userName(comment.getUser().getUserName())
                 .postId(comment.getPost().getId())
-                .createdAt(comment.getCreateAt())
+                .createdDate(comment.getCreatedDate())
                 .lastModifiedBy(comment.getLastModifiedBy())
                 .build();
     }
