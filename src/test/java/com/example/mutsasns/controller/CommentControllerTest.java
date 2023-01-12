@@ -90,7 +90,7 @@ class CommentControllerTest {
 
 
     @Test
-    @DisplayName("댓글 - 성공")
+    @DisplayName("댓글 등록 - 성공")
     @WithMockUser
     void comment_success() throws Exception {
 
@@ -114,7 +114,7 @@ class CommentControllerTest {
 
 
     @Test
-    @DisplayName("댓글 - 실패(게시물이 없는 경우)")
+    @DisplayName("댓글 등록 - 실패(게시물이 없는 경우)")
     @WithMockUser
     void comment_fail1() throws Exception {
 
@@ -135,7 +135,7 @@ class CommentControllerTest {
     }
 
     @Test
-    @DisplayName("댓글 - 실패(로그인 실패)")
+    @DisplayName("댓글 등록 - 실패(로그인 실패)")
     @WithMockUser
     void comment_fail2() throws Exception {
 
