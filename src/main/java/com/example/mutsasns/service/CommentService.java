@@ -1,14 +1,13 @@
 package com.example.mutsasns.service;
 
-import com.example.mutsasns.entity.Comment;
-import com.example.mutsasns.entity.Post;
-import com.example.mutsasns.entity.User;
+import com.example.mutsasns.entity.*;
 import com.example.mutsasns.entity.dto.comment.CommentDeleteResponse;
 import com.example.mutsasns.entity.dto.comment.CommentRequest;
 import com.example.mutsasns.entity.dto.comment.CommentResponse;
 import com.example.mutsasns.entity.dto.comment.CommentUpdateResponse;
 import com.example.mutsasns.exception.AppException;
 import com.example.mutsasns.exception.ErrorCode;
+import com.example.mutsasns.repository.AlarmRepository;
 import com.example.mutsasns.repository.CommentRepository;
 import com.example.mutsasns.repository.PostRepository;
 import com.example.mutsasns.repository.UserRepository;
@@ -25,13 +24,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final AlarmRepository alarmRepository;
     public CommentResponse create(CommentRequest dto, String userName, Long postId) {
         User user = userRepository.findByUserName(userName).orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
-        if (!post.getUser().getId().equals(user.getId())) throw new AppException(ErrorCode.INVALID_TOKEN, ErrorCode.INVALID_TOKEN.getMessage());
-
         Comment comment =commentRepository.save(dto.toEntity(user, post));
+
+        alarmRepository.save(new Alarm(AlarmType.NEW_COMMENT_ON_POST, post.getUser(), user.getId(), postId, "new comment"));
 
         return CommentResponse.of(comment);
     }
