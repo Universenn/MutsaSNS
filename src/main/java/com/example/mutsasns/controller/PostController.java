@@ -1,5 +1,6 @@
 package com.example.mutsasns.controller;
 
+import com.example.mutsasns.entity.User;
 import com.example.mutsasns.entity.dto.Response;
 import com.example.mutsasns.entity.dto.post.PostCreateResponse;
 import com.example.mutsasns.entity.dto.post.PostRequest;
@@ -9,6 +10,8 @@ import com.example.mutsasns.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +50,7 @@ public class PostController {
     }
 
     @GetMapping()
-    public Response<Page<PostResponse>> list(Pageable pageable) {
+    public Response<Page<PostResponse>> list(@PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostResponse> list = postService.list(pageable);
         return Response.success(list);
     }
@@ -68,7 +71,16 @@ public class PostController {
         return Response.success(result);
     }
 
+    /**
+     * 마이 피드
+     */
 
+    @GetMapping("/my")
+    public Response<Page<PostResponse>> myFeed(@PageableDefault(size = 20, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
+        String userName = authentication.getName();
+        Page<PostResponse> list = postService.myFeed(userName, pageable);
+        return Response.success(list);
+    }
 
 
 }

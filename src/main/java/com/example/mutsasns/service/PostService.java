@@ -60,4 +60,9 @@ public class PostService {
     public Page<PostResponse> list(Pageable pageable) {
         return postRepository.findAll(pageable).map(PostResponse::of);
     }
+
+    public Page<PostResponse> myFeed(String userName,Pageable pageable) {
+        User user = userRepository.findByUserName(userName).orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+        return postRepository.findAllByUser(pageable, user).map(PostResponse::of);
+    }
 }
