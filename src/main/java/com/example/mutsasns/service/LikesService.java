@@ -26,7 +26,7 @@ public class LikesService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
         likesRepository.findByPostAndUser(post, user).ifPresent(likes -> {
-            throw new AppException(ErrorCode.DUPLICATED_LIKE, ErrorCode.DUPLICATED_USERNAME.getMessage());
+            throw new AppException(ErrorCode.DUPLICATED_LIKE, ErrorCode.DUPLICATED_LIKE.getMessage());
         });
 
 
