@@ -18,7 +18,6 @@ import static javax.persistence.CascadeType.REMOVE;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 @Where(clause = "deleted = false")
 @SQLDelete(sql = "UPDATE Post SET deleted = true WHERE id = ?")
 public class Post extends BaseEntity{
