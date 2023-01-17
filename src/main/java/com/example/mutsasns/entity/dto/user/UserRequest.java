@@ -15,10 +15,10 @@ public class UserRequest {
 
 
     // DTO -> Entity
-    public User toEntity() {
+    public User toEntity(String encoder) {
         return User.builder()
                 .userName(userName)
-                .password(password)
+                .password(encoder)
                 .build();
     }
 }

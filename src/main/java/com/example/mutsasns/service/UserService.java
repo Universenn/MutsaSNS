@@ -35,13 +35,9 @@ public class UserService {
             throw new AppException(ErrorCode.DUPLICATED_USERNAME, ErrorCode.DUPLICATED_USERNAME.getMessage());
         });
 
-//
-        User user = User.builder()
-                .userName(dto.getUserName())
-                .password(encoder.encode(dto.getPassword()))
-                .build();
 
-        userRepository.save(user);
+        String encodePw = encoder.encode(dto.getPassword());
+        User user = userRepository.save(dto.toEntity(encodePw));
 
         return UserJoinResponse.of(user);
     }
