@@ -1,5 +1,6 @@
 package com.example.mutsasns.entity;
 
+import com.example.mutsasns.entity.dto.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,5 +24,9 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole role = UserRole.ROLE_USER;
 
 }
